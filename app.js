@@ -239,6 +239,88 @@ function start() {
           );
           break;
   
+        case 'Add role':
+          connection.query(
+            'SELECT * FROM department',
+            (err, result) => {
+              if (err) throw err;
+  
+              const departments = result.map(department => department.name);
+  
+              inquirer.prompt([
+                {
+                  type: 'input',
+                  name: 'title',
+                  message: 'What is the title of this role?'
+                },
+                {
+                  type: 'input',
+                  name: 'salary',
+                  message: 'What is the salary of this role?',
+                  validate: salary => {
+                    if (isNaN(salary) || salary < 0) {
+                      return 'Please enter a number greater than zero.';
+                    }
+  
+                    return true;
+                  }
+                },
+                {
+                  type: 'list',
+                  name: 'department',
+                  message: 'What department is this role in?',
+                  choices: departments
+                }
+              ]).then(answer => {
+                const { title } = answer;
+                const salary = Number(answer.salary).toFixed(2);
+                const department_id = result.filter(department => {
+                  return department.name === answer.department;
+                })[0].id;
+  
+                connection.query(
+                  'INSERT INTO role SET ?',
+                  {
+                    title,
+                    salary,
+                    department_id
+                  },
+                  (err, result) => {
+                    if (err) throw err;
+  
+                    console.log(`${title} successfully added to roles.`);
+  
+                    start();
+                  }
+                );
+              });
+            }
+          );
+          break;
+  
+        case 'Add department':
+          inquirer.prompt(
+            {
+              type: 'input',
+              name: 'name',
+              message: 'What is the name of the department?'
+            }
+          ).then(answer => {
+            const { name } = answer;
+  
+            connection.query(
+              'INSERT INTO department (name) VALUES (?)',
+              name,
+              (err, result) => {
+                if (err) throw err;
+  
+                console.log(`${name} successfully added to departments.`);
+  
+                start();
+              });
+          });
+          break;
+  
       }
     });
   }
