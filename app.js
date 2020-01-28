@@ -359,6 +359,41 @@ function start() {
           );
           break;
   
+        case 'Remove role':
+          connection.query(
+            'SELECT * FROM role',
+            (err, result) => {
+              if (err) throw err;
+  
+              const roles = result.map(role => role.title);
+  
+              inquirer.prompt(
+                {
+                  type: 'list',
+                  name: 'role',
+                  message: 'Which role do you want to remove?',
+                  choices: roles
+                }
+              ).then(answer => {
+                const { role } = answer;
+  
+                connection.query(
+                  'DELETE FROM role WHERE title = ?',
+                  role,
+                  (err, result) => {
+                    if (err) throw err;
+  
+                    console.log(`${role} successfully removed.`);
+  
+                    start();
+                  }
+                );
+              });
+            }
+          );
+          break;
+  
+       
       }
     });
   }
