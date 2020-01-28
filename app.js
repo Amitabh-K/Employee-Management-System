@@ -393,7 +393,43 @@ function start() {
           );
           break;
   
-       
+        case 'Remove department':
+          connection.query(
+            'SELECT * FROM department',
+            (err, result) => {
+              if (err) throw err;
+  
+              const departments = result.map(department => department.name);
+  
+              inquirer.prompt(
+                {
+                  type: 'list',
+                  name: 'department',
+                  message: 'Which department do you want to remove?',
+                  choices: departments
+                }
+              ).then(answer => {
+                const { department } = answer;
+  
+                connection.query(
+                  'DELETE FROM department WHERE name = ?',
+                  department,
+                  (err, result) => {
+                    if (err) throw err;
+  
+                    console.log('Department successfully removed.');
+  
+                    start();
+                  }
+                );
+              });
+            }
+          );
+          break;
+  
+        case 'Exit':
+          connection.end();
+          break;
       }
     });
   }
