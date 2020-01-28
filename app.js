@@ -173,6 +173,72 @@ function start() {
           );
           break;
   
+        case 'Add employee':
+          connection.query(
+            'SELECT * FROM employee',
+            (err, employeeResult) => {
+              const employees = employeeResult.map(employee => {
+                return employee.first_name + ' ' + employee.last_name;
+              });
+  
+              connection.query(
+                'SELECT * FROM role',
+                (err, roleResult) => {
+                  const roles = roleResult.map(role => {
+                    return role.title;
+                  });
+  
+                  inquirer.prompt([
+                    {
+                      type: 'input',
+                      name: 'first_name',
+                      message: 'What is the employee\'s first name?'
+                    },
+                    {
+                      type: 'input',
+                      name: 'last_name',
+                      message: 'What is the employee\'s last name?'
+                    },
+                    {
+                      type: 'list',
+                      name: 'role',
+                      message: 'What is the employee\'s role?',
+                      choices: roles
+                    },
+                    {
+                      type: 'list',
+                      name: 'manager',
+                      message: 'Who is the employee\'s manager?',
+                      choices: employees.concat('None')
+                    }
+                  ]).then(answer => {
+                    const { first_name, last_name } = answer;
+                    const manager = employeeResult.filter(employee => {
+                      return employee.first_name + ' ' + employee.last_name === answer.manager;
+                    })[0];
+                    const role_id = roleResult.filter(role => {
+                      return role.title === answer.role;
+                    })[0].id;
+                    const manager_id = manager ? manager.id : null;
+  
+                    connection.query(
+                      'INSERT INTO employee SET ?',
+                      { first_name, last_name, role_id, manager_id },
+                      (err, result) => {
+                        if (err) throw err;
+  
+                        console.log(`${first_name} ${last_name} was successfully added to employees.`);
+  
+                        start();
+                      }
+                    );
+                  });
+                }
+              );
+            }
+          );
+          break;
+  
       }
     });
   }
