@@ -1,5 +1,8 @@
-var express = require("express");
+var inquirer = require("inquirer");
 var mysql = require("mysql");
+const { printTable } = require('console-table-printer');
+
+
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -9,11 +12,27 @@ var connection = mysql.createConnection({
   database: "employee_tracker_db"
 });
 
+
+
+const CFonts = require('cfonts');
+ 
+CFonts.say('EMPLOYEE TRACKER', {
+    font: 'chrome',              // define the font face
+    align: 'left',              // define text alignment
+    colors:  ['cyanBright', 'whiteBright','redBright'],         // define all colors
+    background: 'transparent',  // define the background color, you can also use `backgroundColor` here as key
+    letterSpacing: 1,           // define letter spacing
+    lineHeight: 1,              // define the line height
+    space: true,                // define if the output text should have empty lines on top and on the bottom
+    maxLength: '0',             // define how many character can be on one line
+});
+
 connection.connect(function(err) {
   if (err) {
     console.error("error connecting: " + err.stack);
     return;
   }
+   console.log("connected as id " + connection.threadId);
   start();
 });
 
@@ -49,7 +68,7 @@ function start() {
             (err, result) => {
               if (err) throw err;
   
-              console.log(table(toTableFormat(result)));
+              console.log(printTable(result));              
   
               start();
             });
@@ -87,7 +106,7 @@ function start() {
                   return employee.manager_id === manager.id;
                 });
   
-                console.log(table(toTableFormat(employees)));
+                console.log(printTable(employees));
   
                 start();
               });
@@ -101,7 +120,7 @@ function start() {
             (err, result) => {
               if (err) throw err;
   
-              console.log(table(toTableFormat(result)));
+              console.log(printTable (result));
   
               start();
             });
@@ -113,7 +132,7 @@ function start() {
             (err, result) => {
               if (err) throw err;
   
-              console.log(table(toTableFormat(result)));
+              console.log(printTable (result));
   
               start();
             });
