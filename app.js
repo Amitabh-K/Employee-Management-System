@@ -95,10 +95,84 @@ function start() {
           );
           break;
   
+        case 'View all roles':
+          connection.query(
+            'SELECT * FROM role',
+            (err, result) => {
+              if (err) throw err;
   
-        case 'Exit':
-          connection.end();
+              console.log(table(toTableFormat(result)));
+  
+              start();
+            });
           break;
+  
+        case 'View all departments':
+          connection.query(
+            'SELECT * FROM department',
+            (err, result) => {
+              if (err) throw err;
+  
+              console.log(table(toTableFormat(result)));
+  
+              start();
+            });
+          break;
+  
+        case 'Update employee role':
+          connection.query(
+            'SELECT * FROM employee',
+            (err, employeeResult) => {
+              const employees = employeeResult.map(employee => {
+                return employee.first_name + ' ' + employee.last_name;
+              });
+  
+              connection.query(
+                'SELECT * FROM role',
+                (err, roleResult) => {
+                  const roles = roleResult.map(role => {
+                    return role.title;
+                  });
+  
+                  inquirer.prompt([
+                    {
+                      type: 'list',
+                      name: 'employee',
+                      message: 'Which employee\'s role would you like to update?',
+                      choices: employees
+                    },
+                    {
+                      type: 'list',
+                      name: 'role',
+                      message: 'What is the employee\'s new role?',
+                      choices: roles
+                    }
+                  ]).then(answer => {
+                    const id = employeeResult.filter(employee => {
+                      return employee.first_name + ' ' + employee.last_name === answer.employee;
+                    })[0].id;
+                    const role_id = roleResult.filter(role => {
+                      return role.title === answer.role;
+                    })[0].id;
+  
+                    connection.query(
+                      'UPDATE employee SET role_id = ? WHERE id = ?',
+                      [role_id, id],
+                      (err, result) => {
+                        if (err) throw err;
+  
+                        console.log(`Role successfully updated.`);
+  
+                        start();
+                      }
+                    );
+                  });
+                }
+              );
+            }
+          );
+          break;
+  
       }
     });
   }
