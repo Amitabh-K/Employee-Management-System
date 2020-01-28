@@ -321,6 +321,44 @@ function start() {
           });
           break;
   
+        case 'Remove employee':
+          connection.query(
+            'SELECT * FROM employee',
+            (err, result) => {
+              if (err) throw err;
+  
+              const employees = result.map(employee => {
+                return employee.first_name + ' ' + employee.last_name;
+              });
+  
+              inquirer.prompt(
+                {
+                  type: 'list',
+                  name: 'employee',
+                  message: 'Which employee do you want to remove?',
+                  choices: employees
+                }
+              ).then(answer => {
+                const { employee } = answer;
+                const firstName = employee.split(' ')[0];
+                const lastName = employee.split(' ')[1];
+  
+                connection.query(
+                  'DELETE FROM employee WHERE first_name = ? AND last_name = ?',
+                  [firstName, lastName],
+                  (err, result) => {
+                    if (err) throw err;
+  
+                    console.log('Employee successfully removed.');
+  
+                    start();
+                  }
+                );
+              });
+            }
+          );
+          break;
+  
       }
     });
   }
