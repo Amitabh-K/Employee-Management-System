@@ -1,14 +1,13 @@
 {
-  "name": "employee_tracker",
+  "name": "test",
   "version": "1.0.0",
-  "description": "employee_tracker using inquirer and mysql",
+  "description": "",
   "main": "app.js",
   "dependencies": {
     "cfonts": "^2.4.8",
     "console-table-printer": "^1.1.52",
     "inquirer": "^7.0.4",
-    "mysql": "^2.18.1",
-    "table": "^5.4.6"
+    "mysql": "^2.18.1"
   },
   "devDependencies": {},
   "scripts": {
