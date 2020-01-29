@@ -1,5 +1,5 @@
-var inquirer = require("inquirer");
-var mysql = require("mysql");
+const inquirer = require("inquirer");
+const mysql = require("mysql");
 const { printTable } = require('console-table-printer');
 
 
@@ -19,7 +19,7 @@ const CFonts = require('cfonts');
 CFonts.say('EMPLOYEE TRACKER', {
     font: 'chrome',              // define the font face
     align: 'left',              // define text alignment
-    colors:  ['cyanBright', 'whiteBright','redBright'],         // define all colors
+    colors:  ['cyanBright', 'yellowBright','redBright'],         // define all colors
     background: 'transparent',  // define the background color, you can also use `backgroundColor` here as key
     letterSpacing:0 ,           // define letter spacing
     lineHeight: 0,              // define the line height
