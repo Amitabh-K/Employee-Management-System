@@ -46,12 +46,12 @@ function start() {
         name: 'action',
         message: 'What would you like to do?',
         choices: [
-          'View department budget',
-          "View manager's budget utilization",
           'View all employees',
           'View employees by manager',
           'View all roles',
           'View all departments',
+          'View department budget utilized',
+          'View manager budget utilization',
           'Update employee role',
           'Add employee',
           'Add role',
@@ -130,7 +130,7 @@ function start() {
             });
           break;
   
-        case 'View all departments':
+        case 'View all departments ':
           connection.query(
             'SELECT * FROM department',
             (err, result) => {
@@ -142,15 +142,25 @@ function start() {
             });
           break;
 
-          case 'View budget':
+          case 'View department budget utilized':
             connection.query(
-              'select d.name, SUM(r.salary) "Total_Salary" from role r JOIN department d JOIN employee e where r.role_id = e.role_id and r.department_id = d.department_id group by r.department_id;',
+              'select d.name "Department", SUM(r.salary) "Budget Utilized" from role r JOIN department d JOIN employee e where r.role_id = e.role_id and r.department_id = d.department_id group by r.department_id;',
               (err, result) => {
                 if (err) throw err;    
                 console.log(printTable (result));    
                 start();
               });
-            break;          
+            break;   
+
+            case 'View manager budget utilization':
+              connection.query(
+                "select concat(e.first_name,' ', e.last_name) 'Manager_Name', SUM(r.salary) 'Budget Utilized' from role r JOIN department d JOIN employee e where r.role_id = e.role_id and r.department_id = d.department_id group by e.manager_id;",
+                (err, result) => {
+                  if (err) throw err;    
+                  console.log(printTable (result));    
+                  start();
+                });
+              break;
   
         case 'Update employee role':
           connection.query(
