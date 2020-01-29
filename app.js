@@ -33,8 +33,7 @@ connection.connect(function(err) {
   if (err) {
     console.error("error connecting: " + err.stack);
     return;
-  }
-   console.log("connected as id " + connection.threadId);
+  }   
   start();
 });
 
@@ -86,11 +85,11 @@ function start() {
   
               const managerNames = [];
               const managerIds = result
-                .map(employee => employee.manager_id)
-                .filter(id => typeof id === 'number');
+              .map(employee => employee.manager_id)
+              .filter(manager_id => typeof manager_id === 'number');
   
               result.forEach(employee => {
-                if (managerIds.includes(employee.id)) {
+                if (managerIds.includes(employee.employee_id)) {
                   managerNames.push(employee.first_name + ' ' + employee.last_name);
                 }
               });
@@ -107,7 +106,7 @@ function start() {
                   return employee.first_name + ' ' + employee.last_name === answer.manager;
                 });
                 const employees = result.filter(employee => {
-                  return employee.manager_id === manager.id;
+                  return employee.manager_id === manager.employee_id;
                 });
   
                 console.log(printTable(employees));
@@ -130,7 +129,7 @@ function start() {
             });
           break;
   
-        case 'View all departments ':
+        case 'View all departments':
           connection.query(
             'SELECT * FROM department',
             (err, result) => {
@@ -474,5 +473,5 @@ function start() {
           connection.end();
           break;
       }
-    });
+    });    
   }
