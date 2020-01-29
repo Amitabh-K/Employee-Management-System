@@ -18,7 +18,9 @@ This command-line application can do the followings:
   * View the total utilized budget of a `manager` -- ie the combined salaries of all employees in that department
 
 
+## Usage demo utilized budget
 
+![Usage demo](./assets/demob.gif)
 
 ## Usage demo View
 
