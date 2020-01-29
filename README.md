@@ -2,6 +2,21 @@
 
 A command line application that can be used to manage employee powered by MySQL database, Node.js with  inquirer.
 
+This command-line application can do the followings:
+
+  * Add departments, roles, employees
+
+  * View departments, roles, employees
+
+  * Update employee roles  
+
+  * View employees by manager
+
+  * Delete departments, roles, and employees
+
+  * View the total utilized budget of a `department` -- ie the combined salaries of all employees in that department
+  * View the total utilized budget of a `manager` -- ie the combined salaries of all employees in that department
+
 
 ## Usage demo View
 

@@ -46,11 +46,12 @@ function start() {
         name: 'action',
         message: 'What would you like to do?',
         choices: [
+          'View department budget',
+          "View manager's budget utilization",
           'View all employees',
           'View employees by manager',
           'View all roles',
           'View all departments',
-          'View budget',
           'Update employee role',
           'Add employee',
           'Add role',
@@ -143,43 +144,13 @@ function start() {
 
           case 'View budget':
             connection.query(
-              'SELECT * FROM employee',
+              'select d.name, SUM(r.salary) "Total_Salary" from role r JOIN department d JOIN employee e where r.role_id = e.role_id and r.department_id = d.department_id group by r.department_id;',
               (err, result) => {
-                if (err) throw err;
-    
-                const managerNames = [];
-                const managerIds = result
-                  .map(employee => employee.manager_id)
-                  .filter(id => typeof id === 'number');
-    
-                result.forEach(employee => {
-                  if (managerIds.includes(employee.id)) {
-                    managerNames.push(employee.first_name + ' ' + employee.last_name);
-                  }
-                });
-    
-                inquirer.prompt(
-                  {
-                    type: 'list',
-                    name: 'manager',
-                    message: 'What is the manager\'s name?',
-                    choices: managerNames
-                  }
-                ).then(answer => {
-                  const [manager] = result.filter(employee => {
-                    return employee.first_name + ' ' + employee.last_name === answer.manager;
-                  });
-                  const employees = result.filter(employee => {
-                    return employee.manager_id === manager.id;
-                  });
-    
-                  console.log(printTable(employees));
-    
-                  start();
-                });
-              }
-            );
-            break;
+                if (err) throw err;    
+                console.log(printTable (result));    
+                start();
+              });
+            break;          
   
         case 'Update employee role':
           connection.query(
