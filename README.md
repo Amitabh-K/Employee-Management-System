@@ -20,7 +20,7 @@ This command-line application can do the followings:
 
 ## Usage demo utilized budget
 
-![Usage demo](./assets/demob.gif)
+![Usage demo](./assets/demobu.gif)
 
 ## Usage demo View
 
