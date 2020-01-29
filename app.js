@@ -50,13 +50,14 @@ function start() {
           'View employees by manager',
           'View all roles',
           'View all departments',
+          'View budget',
           'Update employee role',
           'Add employee',
           'Add role',
           'Add department',
           'Remove employee',
           'Remove role',
-          'Remove department',
+          'Remove department',          
           'Exit'
         ]
       }
@@ -139,6 +140,46 @@ function start() {
               start();
             });
           break;
+
+          case 'View budget':
+            connection.query(
+              'SELECT * FROM employee',
+              (err, result) => {
+                if (err) throw err;
+    
+                const managerNames = [];
+                const managerIds = result
+                  .map(employee => employee.manager_id)
+                  .filter(id => typeof id === 'number');
+    
+                result.forEach(employee => {
+                  if (managerIds.includes(employee.id)) {
+                    managerNames.push(employee.first_name + ' ' + employee.last_name);
+                  }
+                });
+    
+                inquirer.prompt(
+                  {
+                    type: 'list',
+                    name: 'manager',
+                    message: 'What is the manager\'s name?',
+                    choices: managerNames
+                  }
+                ).then(answer => {
+                  const [manager] = result.filter(employee => {
+                    return employee.first_name + ' ' + employee.last_name === answer.manager;
+                  });
+                  const employees = result.filter(employee => {
+                    return employee.manager_id === manager.id;
+                  });
+    
+                  console.log(printTable(employees));
+    
+                  start();
+                });
+              }
+            );
+            break;
   
         case 'Update employee role':
           connection.query(
