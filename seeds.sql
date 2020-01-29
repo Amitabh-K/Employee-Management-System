@@ -1,4 +1,3 @@
-
 INSERT INTO department(name) VALUES ("Operationss");
 INSERT INTO department(name) VALUES ("Engineering");
 INSERT INTO department(name) VALUES ("Marketing");
@@ -26,11 +25,3 @@ INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES ("Leonar
 INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES ("Dwayne", "Johnson", 3, 5);
 INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES ("Sean", "Connery", 1, 3 );
 INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES ("Jeniffer", "Lawrence", 1, 2);
-
-
-select d.name, SUM(r.salary) "Total_Salary" from role r JOIN department d JOIN employee e where r.role_id = e.role_id and r.department_id = d.department_id
-group by r.department_id; 
-
-select concat(e.first_name,' ', e.last_name) "Manager Name", SUM(r.salary) "Total_Salary" from role r JOIN department d JOIN employee e where r.role_id = e.role_id and r.department_id = d.department_id
-group by e.manager_id; 
-
