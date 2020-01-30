@@ -320,7 +320,7 @@ function start() {
                 const salary = Number(answer.salary).toFixed(2);
                 const department_id = result.filter(department => {
                   return department.name === answer.department;
-                })[0].id;
+                })[0].department_id;
   
                 connection.query(
                   'INSERT INTO role SET ?',
