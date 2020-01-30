@@ -190,16 +190,16 @@ function start() {
                       choices: roles
                     }
                   ]).then(answer => {
-                    const id = employeeResult.filter(employee => {
+                    const employee_id = employeeResult.filter(employee => {
                       return employee.first_name + ' ' + employee.last_name === answer.employee;
-                    })[0].id;
+                    })[0].employee_id;
                     const role_id = roleResult.filter(role => {
                       return role.title === answer.role;
-                    })[0].id;
+                    })[0].role_id;
   
                     connection.query(
-                      'UPDATE employee SET role_id = ? WHERE id = ?',
-                      [role_id, id],
+                      'UPDATE employee SET role_id = ? WHERE role_id  = ?',
+                      [role_id, role_id ],
                       (err, result) => {
                         if (err) throw err;
   
