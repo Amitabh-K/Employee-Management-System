@@ -260,8 +260,10 @@ function start() {
                     })[0];
                     const role_id = roleResult.filter(role => {
                       return role.title === answer.role;
-                    })[0].id;
-                    const manager_id = manager ? manager.id : null;
+                    })[0].role_id;
+                    const manager_id = manager ? manager.manager_id : null;
+
+                    // console.log(role);
   
                     connection.query(
                       'INSERT INTO employee SET ?',
