@@ -1,3 +1,5 @@
+[![HitCount](http://hits.dwyl.com/Amitabh-K/ Employee-Management-System.svg)](http://hits.dwyl.com/Amitabh-K/ Employee-Management-System)
+
 # Template Engine - Employee Summary
 
 A command line application that can be used to manage employee powered by MySQL database, Node.js with  inquirer.
