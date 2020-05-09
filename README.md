@@ -1,4 +1,4 @@
-[![HitCount](http://hits.dwyl.com/Amitabh-K/ Employee-Management-System.svg)](http://hits.dwyl.com/Amitabh-K/ Employee-Management-System)
+[![HitCount](http://hits.dwyl.com/Amitabh-K/Employee-Management-System.svg)](http://hits.dwyl.com/Amitabh-K/Employee-Management-System)
 
 # Template Engine - Employee Summary
 
